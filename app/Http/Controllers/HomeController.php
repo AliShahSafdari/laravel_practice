@@ -23,4 +23,36 @@ class HomeController extends Controller
          
          return redirect()->back();
     }
+
+    public function edit($id){
+        // return $id;
+        $note = Note::find($id);
+        return view('home')
+            ->with('notes', Note::all())
+            ->with('data', 'Home')
+            ->with('note', $note);
+
+    }
+
+    public function update(Request $request, $id){
+         $request -> validate([
+            'note'=> 'required'
+         ]);
+
+
+        $note = Note::find($id);
+        $note->note = $request->note;
+        $note->save();
+
+        return redirect('/');
+        // return $request->all();
+    }
+
+    public function delete($id){
+
+        $note= Note::find($id);
+        $note->delete();
+        return redirect('/');
+    }
+
 }
